@@ -1,0 +1,27 @@
+/* dark-theme.css */
+.root {
+    -fx-base: #1a1a1a;
+    -fx-background-color: black;
+    -fx-text-fill: white;
+    -fx-control-inner-background: #1a1a1a;
+}
+
+.label, .check-box, .titled-pane, .button {
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: transparent;
+}
+
+.titled-pane > .title:hover {
+    -fx-background-color: transparent;
+}
+
+.titled-pane > .title {
+    -fx-text-fill: white;
+}
+
+.check-box > .box {
+    -fx-border-color: white;
+}
