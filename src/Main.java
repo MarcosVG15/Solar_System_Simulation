@@ -14,7 +14,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         BorderPane root = SceneBuilder.buildScene(stage);
-        Scene scene = new Scene(root, 1920, 1000, true);
+        Scene scene = new Scene(root, 800, 600, true);
         stage.setScene(scene);
         stage.setTitle("Titan Expedition");
         stage.show();
