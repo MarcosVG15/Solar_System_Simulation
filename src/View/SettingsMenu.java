@@ -1,6 +1,10 @@
 package View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import Controller.CameraController;
+import Model.Planets;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
@@ -17,7 +21,7 @@ import javafx.scene.transform.Rotate;
 public class SettingsMenu {
     private static double height = 1000;
     private static double width = 1920;
-    public VBox createSettingsPanel(PerspectiveCamera camera, SubScene subScene){
+    public VBox createSettingsPanel(PerspectiveCamera camera, SubScene subScene, ArrayList<Planets> planetsList){
         
    //Planets
    VBox planets = new VBox(5, 
@@ -28,18 +32,44 @@ public class SettingsMenu {
                 new CheckBox("Jupiter"),
                 new CheckBox("Saturn"),
                 new CheckBox("Uranus"),
-                new CheckBox("Neptune")
+                new CheckBox("Neptune"),
+                new CheckBox("Moon"),
+                new CheckBox("Titan"),
+                new CheckBox("Sun")
+
+
                 );
+
     planets.getChildren().forEach(e -> {
         if (e instanceof CheckBox) {((CheckBox) e).setSelected(true);};
     });
-    TitledPane planetsMenu = new TitledPane("Show/hide planets", planets);
+
+    planets.getChildren().forEach(e -> {
+        if(e instanceof CheckBox){
+            CheckBox box = (CheckBox) e;
+            String planetName = box.getText();
+
+            box.setOnAction(ev -> {
+                for(Planets planet : planetsList){
+                if(planet.getName().equalsIgnoreCase(planetName)){
+                    planet.setVisible(box.isSelected());
+                    break;
+                }
+                }
+            });
+            box.setSelected(true);
+        }
+        
+    });
+    
+    
+
+    TitledPane planetsMenu = new TitledPane("Show/hide objects", planets);
     // Additional parts of the simulation
     VBox sideParts = new VBox(5,
                 new CheckBox("Rocket Trajectory"),
                 new CheckBox("Orbits"),
-                new CheckBox("Rocket Model"),
-                new CheckBox("Rocket Launch Scene")
+                new CheckBox("Rocket Model")
     );
     sideParts.getChildren().forEach(e -> {
         if (e instanceof CheckBox) {((CheckBox) e).setSelected(true);};
@@ -54,7 +84,6 @@ public class SettingsMenu {
     TitledPane statisticsMenu = new TitledPane("Statistics", statistics);
 
     VBox cameraPosition = new VBox(5, 
-                new Button("From Above"),
                 new Button("Main Camera"),
                 new Button("Side View")
                 );
@@ -91,21 +120,9 @@ public class SettingsMenu {
     }
     
     private static void setUpCameraPosition(SubScene subScene,VBox cameraPosition, PerspectiveCamera camera){
-        Button fromAbove = (Button) cameraPosition.getChildren().get(0);
-        Button mainCamera = (Button) cameraPosition.getChildren().get(1);
-        Button sideView = (Button) cameraPosition.getChildren().get(2);
+        Button mainCamera = (Button) cameraPosition.getChildren().get(0);
+        Button sideView = (Button) cameraPosition.getChildren().get(1);
 
-        fromAbove.setOnAction(e ->{
-            camera.getTransforms().clear();
-            camera.setTranslateX(0);
-            camera.setTranslateY(300);
-            camera.setTranslateZ(0);
-            camera.setRotationAxis(Rotate.X_AXIS);
-            Rotate yRotate = new Rotate(-90, Rotate.Y_AXIS); 
-            Rotate xRotate = new Rotate(0, Rotate.X_AXIS); 
-            camera.getTransforms().addAll(yRotate, xRotate);
-
-        });
 
         mainCamera.setOnAction(e -> {
             camera.getTransforms().clear();
