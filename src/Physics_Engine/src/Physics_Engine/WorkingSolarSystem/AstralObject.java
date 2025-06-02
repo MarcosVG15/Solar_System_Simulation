@@ -1,11 +1,12 @@
 package Physics_Engine.src.Physics_Engine.WorkingSolarSystem;
 
 
+import Physics_Engine.src.Physics_Engine.WorkingSolarSystem.Interfaces.SpaceObject;
 import Physics_Engine.src.Physics_Engine.WorkingSolarSystem.Interfaces.vectorInterface;
 
 import java.util.ArrayList;
 
-public class AstralObject {
+public class AstralObject implements SpaceObject{
     private Vector velocity ;
     private Vector position ;
     private double Mass;
@@ -88,7 +89,16 @@ public class AstralObject {
     }
 
 
+    public String getName(){
+        return Name;
+    }
 
+
+    @Override
+    public boolean hasHitPlanet(SpaceObject astralObject, double Radius) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'hasHitPlanet'");
+    }
 
 
 }
