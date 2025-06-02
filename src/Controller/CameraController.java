@@ -65,12 +65,28 @@ public class CameraController {
 
         // Scroll function
         scene.setOnScroll(e -> {
+            double zoomFactor = 50; 
+            double mouseX = e.getSceneX() - width / 2.0;
+            double mouseY = e.getSceneY() - height / 2.0;          
+            double normX = mouseX / (width / 2.0);
+            double normY = mouseY / (height / 2.0);
+
+            if (e.getDeltaY() > 0) {
+                camera.setTranslateZ(camera.getTranslateZ() + zoomFactor);
+                camera.setTranslateX(camera.getTranslateX() + normX * zoomFactor * 0.5);
+                camera.setTranslateY(camera.getTranslateY() + normY * zoomFactor * 0.5);
+            } else {
+                camera.setTranslateZ(camera.getTranslateZ() - zoomFactor);
+                camera.setTranslateX(camera.getTranslateX() - normX * zoomFactor * 0.5);
+                camera.setTranslateY(camera.getTranslateY() - normY * zoomFactor * 0.5);
+            }
+
             double delta = e.getDeltaY();
             double fovNow = perspectiveCam.getFieldOfView();
             double newFov = fovNow - delta * zoomSpeed;
             perspectiveCam.setFieldOfView(newFov);
-
         });
+       
     }
     public static void resetCameraSettings(SubScene scene, PerspectiveCamera camera, double width, double height){
         camera.setFieldOfView(defaultPOV);
