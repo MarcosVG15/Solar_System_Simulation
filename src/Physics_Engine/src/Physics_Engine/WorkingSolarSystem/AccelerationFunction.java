@@ -3,17 +3,19 @@ package Physics_Engine.src.Physics_Engine.WorkingSolarSystem;
 
 
 
+import Physics_Engine.src.Physics_Engine.WorkingSolarSystem.Interfaces.SpaceObject;
 import Physics_Engine.src.Physics_Engine.WorkingSolarSystem.Interfaces.function;
 import Physics_Engine.src.Physics_Engine.WorkingSolarSystem.Interfaces.vectorInterface;
+import Physics_Engine.src.Physics_Engine.WorkingSolarSystem.Vector;
 
 import java.util.ArrayList;
 
 public class AccelerationFunction implements function {
-    public static final double G = 6.67430e-11;
+    public static final double G = 6.67430e-20 ; //we are working with km ;
 
 
     @Override
-    public vectorInterface computeDerivative(int planet, vectorInterface VectorPosition, ArrayList< AstralObject> solarSystem){
+    public vectorInterface computeDerivative(int planet, vectorInterface VectorPosition, ArrayList<SpaceObject> solarSystem){
         double [] accelerationValues = new double[3];
 
 
@@ -25,18 +27,18 @@ public class AccelerationFunction implements function {
                 if(j==planet){
                     continue;
                 }
-                AstralObject current = solarSystem.get(j);
 
-                double modulus = getModulus(VectorPosition,current.getPositionVector());
-                double MassDividedModulus = current.getMass()/Math.pow(Math.abs(modulus),3);
-
+                SpaceObject current = solarSystem.get(j);
                 double[] planetAPosition = VectorPosition.getVector();
                 double[] currentPosition = current.getPositionVector().getVector();
 
-                summation+= MassDividedModulus*(currentPosition[i]-planetAPosition[i]);
+                double modulus = getModulus(VectorPosition,current.getPositionVector());
+                double MassDividedModulus = (planetAPosition[i] - currentPosition[i])/Math.pow((modulus),3);
+
+                summation+= G*MassDividedModulus*(current.getMass());
 
             }
-            accelerationValues[i] = G*summation;
+            accelerationValues[i] = -summation;
 
         }
 
@@ -46,7 +48,7 @@ public class AccelerationFunction implements function {
     }
 
     private double getModulus(vectorInterface v1 , vectorInterface v2){
-        double modulus = 0;
+        double modulus ;
         double[] valueV1 = v1.getVector();
         double[] valueV2 = v2.getVector();
 
