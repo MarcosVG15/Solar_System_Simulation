@@ -1,22 +1,27 @@
 package Physics_Engine.src.Physics_Engine.WorkingSolarSystem;
 
 
+
+import Physics_Engine.src.Physics_Engine.WorkingSolarSystem.AstralObject;
+import Physics_Engine.src.Physics_Engine.WorkingSolarSystem.Interfaces.SolarSystemInterface;
+import Physics_Engine.src.Physics_Engine.WorkingSolarSystem.Interfaces.SpaceObject;
 import Physics_Engine.src.Physics_Engine.WorkingSolarSystem.Interfaces.function;
 import Physics_Engine.src.Physics_Engine.WorkingSolarSystem.Interfaces.vectorInterface;
+import Physics_Engine.src.Physics_Engine.WorkingSolarSystem.Vector;
 
 import java.util.ArrayList;
 
 public class RK4_ODESolver {
 
-    private static final double H = 1;
+    private static final double H = 60; // Change this back to 60
 
-    public void ComputeODE(double t , SolarSystem solarSystem, function acceleration , function velocity){
+    public void ComputeODE(double t , Physics_Engine.src.Physics_Engine.WorkingSolarSystem.Interfaces.SolarSystemInterface solarSystem, function acceleration , function velocity){
 
 
         int n = solarSystem.getSolarSystem().size();
-        ArrayList<AstralObject> solarSystemArr = solarSystem.getSolarSystem();
+        ArrayList<SpaceObject> solarSystemArr = solarSystem.getSolarSystem();
 
-        ArrayList<AstralObject> snapshotSolarSystem = new ArrayList<>();
+        ArrayList<SpaceObject> snapshotSolarSystem = new ArrayList<>();
         copyArrayList(solarSystemArr ,snapshotSolarSystem);
 
         vectorInterface[] k1_v = new vectorInterface[n], k1_p = new vectorInterface[n];
@@ -26,6 +31,10 @@ public class RK4_ODESolver {
 
 
         for( int i = 0 ; i<n ; i++){
+            if (i == 0) {
+                k1_p[i] = new Vector(0,0,0);
+                k1_v[i] = new Vector(0,0,0);;
+            }
             k1_p[i] = scale(solarSystemArr.get(i).getVelocityVector());
             k1_v[i] = scale(acceleration.computeDerivative(i , solarSystemArr.get(i).getPositionVector() , solarSystemArr));
         }
@@ -34,6 +43,10 @@ public class RK4_ODESolver {
         addSnapshotVelocity(snapshotSolarSystem , solarSystemArr , k1_v , 0.5);
 
         for ( int i = 0 ; i<n ; i++){
+            if (i == 0) {
+                k2_p[i] = new Vector(0,0,0);
+                k2_v[i] = new Vector(0,0,0);;
+            }
             k2_p[i] = scale(snapshotSolarSystem.get(i).getVelocityVector());
             k2_v[i] = scale(acceleration.computeDerivative(i , snapshotSolarSystem.get(i).getPositionVector() , snapshotSolarSystem));
 
@@ -44,6 +57,10 @@ public class RK4_ODESolver {
         addSnapshotVelocity(snapshotSolarSystem , solarSystemArr , k2_v , 0.5);
 
         for ( int i = 0 ; i<n ; i++){
+            if (i == 0) {
+                k3_p[i] = new Vector(0,0,0);
+                k3_v[i] = new Vector(0,0,0);;
+            }
             k3_p[i] = scale(snapshotSolarSystem.get(i).getVelocityVector());
             k3_v[i] = scale(acceleration.computeDerivative(i , snapshotSolarSystem.get(i).getPositionVector() , snapshotSolarSystem));
 
@@ -53,12 +70,18 @@ public class RK4_ODESolver {
         addSnapshotVelocity(snapshotSolarSystem , solarSystemArr , k3_v , 1);
 
         for ( int i = 0 ; i<n ; i++){
+            if (i == 0) {
+                continue;
+            }
             k4_p[i] = scale(snapshotSolarSystem.get(i).getVelocityVector());
             k4_v[i] = scale(acceleration.computeDerivative(i , snapshotSolarSystem.get(i).getPositionVector() , snapshotSolarSystem));
 
         }
 
         for( int i = 0 ; i< n ; i++){
+            if (i == 0) {
+                continue;
+            }
             solarSystemArr.get(i).setPosition(addAll(solarSystemArr.get(i).getPositionVector() , k1_p[i] , k2_p[i] , k3_p[i], k4_p[i]));
             solarSystemArr.get(i).setVelocity(addAll(solarSystemArr.get(i).getVelocityVector() , k1_v[i] , k2_v[i] , k3_v[i], k4_v[i]));
 
@@ -105,7 +128,7 @@ public class RK4_ODESolver {
      * @param currentK = the array of k values
      * @param scalar - the scalar  k that i want to multiple
      */
-    private void addSnapshotPosition(ArrayList<AstralObject> snapshotArray , ArrayList<AstralObject> solarSystem, vectorInterface[] currentK , double scalar){
+    private void addSnapshotPosition(ArrayList<SpaceObject> snapshotArray , ArrayList<SpaceObject> solarSystem, vectorInterface[] currentK , double scalar){
 
       for(int i = 0 ; i < solarSystem.size() ; i++){
           snapshotArray.get(i).setPosition(createSnapshotVector(solarSystem.get(i).getPositionVector() , currentK[i] , scalar));
@@ -120,7 +143,7 @@ public class RK4_ODESolver {
      * @param currentK
      * @param scalar
      */
-    private void addSnapshotVelocity(ArrayList<AstralObject> snapshotArray , ArrayList<AstralObject> solarSystem, vectorInterface[] currentK , double scalar){
+    private void addSnapshotVelocity(ArrayList<SpaceObject> snapshotArray , ArrayList<SpaceObject> solarSystem, vectorInterface[] currentK , double scalar){
 
         for(int i = 0 ; i < solarSystem.size() ; i++){
             snapshotArray.get(i).setVelocity(createSnapshotVector(solarSystem.get(i).getVelocityVector() , currentK[i] , scalar));
@@ -153,10 +176,10 @@ public class RK4_ODESolver {
      * @param actual - the array we want to copy from
      * @param copy - the array we want the copies to be
      */
-    public void copyArrayList(ArrayList<AstralObject> actual , ArrayList<AstralObject> copy){
+    public void copyArrayList(ArrayList<SpaceObject> actual , ArrayList<SpaceObject> copy){
 
         for( int i = 0  ; i<actual.size() ; i++){
-            AstralObject newObject = new AstralObject(
+            SpaceObject newObject =(SpaceObject) new AstralObject(
               new Vector(actual.get(i).getVelocityVector().getX() , actual.get(i).getVelocityVector().getY(),actual.get(i).getVelocityVector().getZ())
             , new Vector(actual.get(i).getPositionVector().getX(), actual.get(i).getPositionVector().getY(), actual.get(i).getPositionVector().getZ() )
             , actual.get(i).getMass());
