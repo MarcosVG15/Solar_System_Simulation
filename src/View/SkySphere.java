@@ -6,14 +6,16 @@ import javafx.scene.shape.CullFace;
 import javafx.scene.shape.Sphere;
 
 public class SkySphere extends Sphere{
-    public SkySphere(double radius, String texturePath){
+    public SkySphere(double radius) {
         super(radius);
-        this.setCullFace(CullFace.NONE); // To show the inner part of the sphere.
+        this.setCullFace(CullFace.NONE);
 
         PhongMaterial material = new PhongMaterial();
-        material.setSelfIlluminationMap(new Image(texturePath));
-        material.setDiffuseMap(new Image(texturePath));
+        Image texture = new Image(getClass().getResource("/Resources/8k_stars_milky_way.jpg").toExternalForm());
+        material.setSelfIlluminationMap(texture);
+        material.setDiffuseMap(texture);
+
         this.setMaterial(material);
     }
-
 }
+
