@@ -1,10 +1,9 @@
 package Controller;
 
 import Model.Planets;
-import Physics_Engine.src.Physics_Engine.SolarSystem.Adams_Bashforth_Solver;
-import Physics_Engine.src.Physics_Engine.SolarSystem.AstralObject;
-import Physics_Engine.src.Physics_Engine.SolarSystem.PositionDerivative;
-import Physics_Engine.src.Physics_Engine.SolarSystem.VelocityDerivative;
+import Physics_Engine.src.Physics_Engine.WorkingSolarSystem.AstralObject;
+import Physics_Engine.src.Physics_Engine.WorkingSolarSystem.SolarSystem;
+import Physics_Engine.src.Physics_Engine.WorkingSolarSystem.Interfaces.SpaceObject;
 import Util.Lighting;
 import View.SettingsMenu;
 import View.SkySphere;
@@ -40,16 +39,10 @@ public class SceneBuilder {
     private static ArrayList<Planets> planets = new ArrayList<>();
 
     /**
-     * The scaling factor used to convert astronomical units to scene units.
-     * Current scale is 1:10^7 to make the visualization manageable.
-     */
-    public static double scale = 1/1e7;
-
-    /**
      * List of all astral objects in the solar system.
      * Contains the physical representation of celestial bodies used for calculations.
      */
-    private static ArrayList<AstralObject> solarSystem = new ArrayList<>();
+    static SolarSystem solarSystemS = new SolarSystem();
 
     /**
      * Builds and returns the main scene of the solar system simulation.
@@ -74,12 +67,14 @@ public class SceneBuilder {
         Group sceneElementsGroup = new Group();
 
         // Sky sphere background
-        SkySphere background = new SkySphere(50000, "file:src/Resources/8k_stars_milky_way.jpg");
+        SkySphere background = new SkySphere(50000);//"file:src/Resources/8k_stars_milky_way.jpg"
         sceneElementsGroup.getChildren().add(background);
 
         //Objects in solar system
-        solarSystem = SolarSystemInitializer.initializeSystem(sceneElementsGroup);
-        planets = SolarSystemInitializer.getAllPlanets(sceneElementsGroup);
+        planets = SolarSystemInitializer.createVisualizationOfPlanets(solarSystemS, sceneElementsGroup);
+        for(Planets planet : planets){
+            planet.updatePosition();
+        }
         System.out.println("Amount of elements in the Solar System: " + planets.size());
 
         // Lighting
@@ -110,59 +105,14 @@ public class SceneBuilder {
 
         // GUI Left Menu
         SettingsMenu menu = new SettingsMenu();
-        root.setLeft(menu.createSettingsPanel(camera, subScene));
+        root.setLeft(menu.createSettingsPanel(camera, subScene, planets));
         root.setCenter(subScene);
         
-        /**
-         * Animation timer that handles the continuous update of planetary positions and velocities.
-         * Uses the Adams-Bashforth 4th order method for numerical integration of the equations of motion.
-         * The animation updates the position and velocity of each planet based on gravitational interactions
-         * with other bodies in the solar system but the animation needs to be fixed.
-         */
-        AnimationTimer animation = new AnimationTimer() {
-            private long lastTime = 0;
-            
-            private final Adams_Bashforth_Solver Adams_Bashforth_Solver = new Adams_Bashforth_Solver();
-            
-            private final PositionDerivative positionDerivative = new PositionDerivative();
-            
-            private final VelocityDerivative velocityDerivative = new VelocityDerivative();
-            
-            private final double timeStep = 60;
-            
-            private double t = 0;
+        // Animation
 
-            /**
-             * Handles each frame of the animation.
-             * Updates the position and velocity of each planet using the Adams-Bashforth integration method.
-             * 
-             * @param now The timestamp of the current frame in nanoseconds
-             */
-            @Override
-            public void handle(long now){
-                if(lastTime == 0){
-                    lastTime = now;
-                    return;
-                }
-                t += timeStep;
-                
-                for (Planets planet : planets) {
-                    planet.getAstralObject().setAcceleration(solarSystem);
-                }
+        Animation animation = new Animation(planets, solarSystemS);
+        animation.animationStart(sceneElementsGroup);
 
-                for(Planets planet : planets){
-                    AstralObject obj = planet.getAstralObject();
-
-                    double[] newVelocity = Adams_Bashforth_Solver.AB4(timeStep, t, obj.getVelocities(), obj.getPastVelocities(), obj.getAcceleration(), velocityDerivative);
-                    double[] newCoordinates = Adams_Bashforth_Solver.AB4(timeStep, t, obj.getCoordinates(), obj.getPastCoordinates(), obj.getAcceleration(), positionDerivative);
-                    obj.setCoordinates(newCoordinates);
-                    obj.setVelocities(newVelocity);
-                    planet.updatePosition(scale);
-                }
-                lastTime = now;
-            }
-        };
-        animation.start();
-         return root;
+        return root;
     }
 }
