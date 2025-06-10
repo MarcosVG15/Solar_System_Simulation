@@ -10,7 +10,7 @@ All the physics is put together with GUI ensuring high level of detail.
 - Find "vmArgs" arguments and inside each of them change and add filepath to your javaFX lib location
 - like this "--module-path \"<input your filepath here>" --add-modules javafx.controls,javafx.fxml"
 
-Run [Main.java](./src/Main.java) to start the simulation. 
+Finally, run [Main.java](./src/Main.java) to start the simulation. 
 
 ## Physics Engine
 All inner works of the [Physics Engine](./src/Physics_Engine) is located here. <br>
