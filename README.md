@@ -25,7 +25,7 @@ Enables customization of the scene and uses [Physics Engine](./src/Physics_Engin
 
 ## Testing 
 For tests please visit this [project](https://github.com/MarcosVG15/Physics-Engine---Orbital-Dynamics), which includes all physics engine related code. <br>
-Code coverage report can be found in [here](./code_coverage/index.html) <br>
+Code coverage report can be found in [here](./code_coverage) <br>
 Proof of all the test passing can be found [here](./code_coverage/testResults.md).
 
 
