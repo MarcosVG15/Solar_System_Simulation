@@ -19,7 +19,7 @@ This toghether produces output that is passed by to GUI.
 To test the physics engine [TEST.java](./src/Physics_Engine/src/Physics_Engine/WorkingSolarSystem/TEST.java) puts everything togheter.
 
 ## GUI
-The heart of application lies in [Controller](./src/Controller) all the resources from [Utill](./src/Utill), [Resources](./src/Resources), [View](./src/View) and builds the application.
+The heart of application lies in [Controller](./src/Controller) all the resources from [Util](./src/Util), [Resources](./src/Resources), [View](./src/View) and builds the application.
 Enables customization of the scene and uses [Physics Engine](./src/Physics_Engine) to update its objects.
 
 ## Project Memebers
