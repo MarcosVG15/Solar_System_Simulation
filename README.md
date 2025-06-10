@@ -5,7 +5,7 @@ The Newton's gravitational force is implemented to ensure correct behavior of pl
 All the physics is put together with GUI ensuring high level of detail.
 
 ## Getting started
-Run [Main.java](./Main.java) to start the simulation. 
+Run [Main.java](./src/Main.java) to start the simulation. 
 
 ## Physics Engine
 All inner works of the [Physics Engine](./Physics_Engine) is located here. 
