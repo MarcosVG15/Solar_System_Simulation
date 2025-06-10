@@ -8,7 +8,7 @@ All the physics is put together with GUI ensuring high level of detail.
 - Go to .vscode directory inside the project
 - Open up launch.json
 - Find "vmArgs" arguments and inside each of them change and add filepath to your javaFX lib location
-- like this "--module-path \"<input your filepath here>" --add-modules javafx.controls,javafx.fxml"
+- like this "--module-path \"\<input your filepath here>" --add-modules javafx.controls,javafx.fxml"
 
 Finally, run [Main.java](./src/Main.java) to start the simulation. 
 
