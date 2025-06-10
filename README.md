@@ -8,7 +8,7 @@ All the physics is put together with GUI ensuring high level of detail.
 Run [Main.java](./src/Main.java) to start the simulation. 
 
 ## Physics Engine
-All inner works of the [Physics Engine](./Physics_Engine) is located here. 
+All inner works of the [Physics Engine](./src/Physics_Engine) is located here. 
 It consists of:
 - Runge-Kutta 4th order solver 
 - Differential equations
@@ -16,11 +16,11 @@ It consists of:
 - Rocket behavior logic
 This toghether produces output that is passed by to GUI.
 
-To test the physics engine [TEST.java](./Physics_Engine/src/Physics_Engine/WorkingSolarSystem/TEST.java) puts everything togheter.
+To test the physics engine [TEST.java](./src/Physics_Engine/src/Physics_Engine/WorkingSolarSystem/TEST.java) puts everything togheter.
 
 ## GUI
-The heart of application lies in [Controller](./Controller) all the resources from [Utill](./Utill), [Resources](./Resources), [View](./View) and builds the application.
-Enables customization of the scene and uses [Physics Engine](./Physics_Engine) to update its objects.
+The heart of application lies in [Controller](./src/Controller) all the resources from [Utill](./src/Utill), [Resources](./src/Resources), [View](./src/View) and builds the application.
+Enables customization of the scene and uses [Physics Engine](./src/Physics_Engine) to update its objects.
 
 ## Project Memebers
 - Keci Francisco Chilala
