@@ -5,6 +5,11 @@ The Newton's gravitational force is implemented to ensure correct behavior of pl
 All the physics is put together with GUI ensuring high level of detail.
 
 ## Getting started
+- Go to .vscode directory inside the project
+- Open up launch.json
+- Find "vmArgs" arguments and inside each of them change and add filepath to your javaFX lib location
+- like this "--module-path \"<input your filepath here>" --add-modules javafx.controls,javafx.fxml"
+
 Run [Main.java](./src/Main.java) to start the simulation. 
 
 ## Physics Engine
@@ -21,6 +26,8 @@ To test the physics engine [TEST.java](./src/Physics_Engine/src/Physics_Engine/W
 ## GUI
 The heart of application lies in [Controller](./src/Controller) all the resources from [Util](./src/Util), [Resources](./src/Resources), [View](./src/View) and builds the application. <br>
 Enables customization of the scene and uses [Physics Engine](./src/Physics_Engine) to update its objects.
+
+
 
 
 ## Testing 
