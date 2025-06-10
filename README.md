@@ -24,7 +24,11 @@ It consists of:
 - Rocket behavior logic
 This toghether produces output that is passed by to GUI.
 
-To test the physics engine [TEST.java](./src/Physics_Engine/src/Physics_Engine/WorkingSolarSystem/TEST.java) puts everything togheter.
+To test the physics engine [TEST.java](./src/Physics_Engine/ODESolverRK4/TEST.java) puts everything togheter.
+
+For rocket mission test enviorment please look at [TEST.java](./src/Physics_Engine/RocketMissson/TEST.java).
+
+Finally, for probe mission testing there is a file [TEST.java](./src/Physics_Engine/ProbeMission/TEST.java).
 
 ## GUI
 The heart of application lies in [Controller](./src/Controller) all the resources from [Util](./src/Util), [Resources](./src/Resources), [View](./src/View) and builds the application. <br>
