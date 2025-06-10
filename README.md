@@ -22,6 +22,14 @@ To test the physics engine [TEST.java](./src/Physics_Engine/src/Physics_Engine/W
 The heart of application lies in [Controller](./src/Controller) all the resources from [Util](./src/Util), [Resources](./src/Resources), [View](./src/View) and builds the application.
 Enables customization of the scene and uses [Physics Engine](./src/Physics_Engine) to update its objects.
 
+
+## Testing 
+For tests please visit this [project](https://github.com/MarcosVG15/Physics-Engine---Orbital-Dynamics), which includes all physics engine related code. 
+Code coverage report can be found [here](file:///home/krzesse/Documents/UM/y1/s2/project/tPhysics/target/site/jacoco/index.html).
+Proof of all the test passing can be found [here](x).
+
+
+
 ## Project Memebers
 - Keci Francisco Chilala
 - Yalçin Karakurum
